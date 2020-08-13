@@ -9,10 +9,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    //use Notifiable;
-    use HasApiTokens, Notifiable ;
-
-
+    use HasApiTokens, Notifiable;
     /**
      * The attributes that are mass assignable.
      *
@@ -39,4 +36,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    public function visits()
+    {
+        return $this->hasMany('App\Visit','visits_vlp_id_foreign');
+    }
 }

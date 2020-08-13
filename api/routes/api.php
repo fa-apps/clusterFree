@@ -23,3 +23,4 @@ Route::middleware('auth:sanctum')->post('/visit','RegisterController@visit');
 Route::middleware('auth:sanctum')->post('/report','ReportController@report');
 Route::post('/login','LoginController@login');
 Route::post('/logout', 'LoginController@logout')->middleware('auth:sanctum');
+Route::middleware('auth:sanctum')->get('/vlp','BoardController@vlp');

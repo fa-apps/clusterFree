@@ -27,7 +27,8 @@
                                     </span>
                             </div>
                         </div>
-                                    <button type="submit" @click.prevent="visit" class="btn btn-primary my-4">Envoyer</button>
+                         <p>Un e-mail sera envoyé à l'adresse ci dessus, avec les details de connexion et un mot de passe généré automatiquement.</p>
+                         <button type="submit" @click.prevent="visit" class="btn btn-primary my-4">Envoyer</button>
                 </div>
             </div>
         </div>

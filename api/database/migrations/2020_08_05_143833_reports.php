@@ -17,7 +17,7 @@ class Reports extends Migration
             $table->id();
             $table->foreignId('reported_by_id')->constrained('users');
             $table->foreignId('reported_for_id')->constrained('users');
-            $table->date('positivity_at');
+            $table->date('tested_at');
             $table->timestamps();
         });
     }

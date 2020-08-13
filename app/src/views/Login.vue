@@ -1,5 +1,5 @@
 <template> 
-    <div class="container">
+    <div class="container mt-3">
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
@@ -63,7 +63,7 @@ import User from "../apis/User"
 export default {
     data : () => ({
         form: {
-            name : '',
+            email : '',
             password : '',
             device_name : 'browser'
         }

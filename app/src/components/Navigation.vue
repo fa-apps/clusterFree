@@ -1,20 +1,20 @@
 <template>
   <nav class="navbar navbar-expand navbar-dark bg-dark">
     <div class="container">
-      <div class="navbar-header">
+      <div class="navbar-header mb-auto">
         <router-link class="navbar-brand" :to="{ path : isLoggedIn ? '/dashboard' : '/' }">Cluster Free</router-link>
       </div>
-      <ul class="nav navbar-nav">
+      <ul class="nav navbar-nav  justify-content-end ">
 
         <router-link v-if="!isLoggedIn" class="nav-item nav-link" :to="{ name: 'Login' }">Connexion</router-link>
 
         <router-link v-if="isLoggedIn" class="nav-item nav-link" :to="{ name: 'Report' }">Signaler Positif</router-link>
 
-        <router-link v-if="isLoggedIn && isRSL" class="nav-item nav-link" :to="{ name: 'Register' }">Enregister RSL/RLP</router-link>
+        <router-link v-if="isLoggedIn && isRSL" class="nav-item nav-link" :to="{ name: 'Register' }">Enregistrer RSL/RLP</router-link>
 
         <router-link v-if="isLoggedIn && isRLP" class="nav-item nav-link" :to="{ name: 'Visit' }">Enregister Visiteur</router-link>
 
-        <a class="nav-item nav-link" v-if="isLoggedIn" @click.prevent="logout" href="#">Deconnexion</a> 
+        <a class="nav-item nav-link" v-if="isLoggedIn" @click.prevent="logout" href="#">Déconnexion</a> 
       </ul>
     </div>
   </nav>
@@ -62,7 +62,6 @@ export default {
         this.isRSL = this.user.role == "RSL";
       }
     }
-
   },
   methods: {
     logout() {

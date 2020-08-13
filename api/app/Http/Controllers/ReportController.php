@@ -10,13 +10,12 @@ class ReportController extends Controller
     public function report(Request $request) {
 
         $request->validate([
-            'email' => 'required|email',
             'tested_at' => 'required|date',
         ]);
 
         $currentUser=Auth()->user();
 
-        $user = User::where('email', $request->email)->first();
+        $user = $request->email ? User::where('email', $request->email)->first() : $currentUser ;
 
         if (! $user ) {
             throw ValidationException::withMessages([

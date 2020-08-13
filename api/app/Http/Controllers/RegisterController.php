@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
+use Illuminate\Support\Str; 
+use Illuminate\Http\RedirectResponse;
+use App\Visit;
 
 class RegisterController extends Controller
 {
@@ -19,15 +21,18 @@ class RegisterController extends Controller
 
             $request->validate([
                 'name'=>['required','string'],
-                'email'=>['required','email','unique:users'],
-                'password'=>['required','string','min:6','confirmed']
+                'role'=>['required','string'],
+                'email'=>['required','email','unique:users']
             ]);
+
+
+            $password = 'password';//Str::random(10);
 
             User::create([
                 'name'=>$request->name,
                 'email'=>$request->email,
                 'role'=>$request->role,
-                'password'=>Hash::make($request->password)
+                'password'=>Hash::make($password)
             ]);
 
             
@@ -41,23 +46,33 @@ class RegisterController extends Controller
 
         if ($user->tokenCan('register_vlp')) {
 
-            $request->validate([
-                'name'=>['required','string'],
-                'email'=>['required','string'],
-            ]);
+            $targetUser = User::where('email', $request->email)->first();
+    
+            if (!$targetUser) {
 
-            $password = Str::random(10);
-            User::create([
-                'name'=>$request->name,
-                'email'=>$request->email,
-                'role'=>"VLP",
-                'password'=>Hash::make($password) 
+                $request->validate([
+                    'name'=>['required','string'],
+                    'email'=>['required','string'],
+                ]);
+    
+                $password = 'password';//Str::random(10);
+                $targetUser = User::create([
+                    'name'=>$request->name,
+                    'email'=>$request->email,
+                    'role'=>"VLP",
+                    'password'=>Hash::make($password) 
+                ]);
+            }
+            
+            $visit = Visit::create([
+                'rlp_id'=>$user->id,
+                'vlp_id'=>$targetUser->id        
             ]);
-
-            return $password;
 
             //TODO send mail
             
+            return true;
+
         }
     }
 }
