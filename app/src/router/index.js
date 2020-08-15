@@ -5,8 +5,12 @@ import Register from '../views/Register.vue'
 import Visit from '../views/Visit.vue'
 import Report from '../views/Report.vue'
 import Login from '../views/Login.vue'
-import Dashboard from "../views/Dashboard.vue";
-
+import Dashboard from "../views/Dashboard.vue"
+import Visits from '../components/Visits.vue'
+import Visitors from '../components/Visitors.vue'
+import Reports from '../components/Reports.vue'
+import Locations from '../components/Locations.vue'
+import RSLs from '../components/RSLs.vue'
 
 function isLoggedIn () {
   return localStorage.getItem("token")
@@ -44,10 +48,35 @@ Vue.use(VueRouter)
   },
   {
     path: "/dashboard",
-    name: "Dashboard",
     component: Dashboard,
-    meta: { authOnly: true }
-  }
+    meta: { authOnly: true },
+    children: [
+    {
+        name: "Dashboard",
+        path: '',
+        component: Visits
+    },
+    {
+        name:"Visitors",
+        path: 'visitors',
+        component: Visitors
+    },
+    {
+        name:"Reports",
+        path: 'reports',
+        component: Reports
+    },
+    {
+        name:"Locations",
+        path: 'locations',
+        component: Locations
+    },
+    {
+        name:"RSLs",
+        path: 'rsls',
+        component: RSLs
+    }
+  ]}
 ]
 
 const router = new VueRouter({

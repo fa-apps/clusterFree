@@ -1,3 +1,23 @@
 .board-section {
     max-height:250px;
 }
+
+.nav-pills .router-link-exact-active {
+    background-color: rgb(5, 97, 139);
+}
+.nav-pills .nav-link {
+    font-size: large !important;
+}
+
+.card {
+    box-shadow: 0 0 8px rgba(33,33,33,.1); 
+}
+
+.h-screen {
+    height: 100vh;
+}
+
+html, body {
+    
+    height: 100%;    
+}

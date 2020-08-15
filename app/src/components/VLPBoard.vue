@@ -1,16 +1,11 @@
 <template>
-    <div class="mt-4">
-        <h4>Liste de vos signalements</h4>
-        <div v-for="report in reports" :key="report.id">
-            Signalement le : <span class="text-secondary">{{ report.date | moment("dddd Do MMMM YYYY à H:mm") }}</span>
-            du test positif du <span class="text-secondary">{{ report.test_date | moment("dddd Do MMMM YYYY") }}</span>
-        </div> <h4>Liste de vos visites</h4>
-        <div v-for="visit in visits" :key="visit.id">
-            {{visit.rlp}} : <span class="text-secondary"> le {{ visit.date | moment("dddd Do MMMM YYYY à H:mm") }}</span>
-        </div>
+    <div class="container px-0 py-4">        
+        <nav class="nav nav-pills flex-column flex-sm-row nav-justified">           
+            <router-link  :to="{ path: '/dashboard' }" class="flex-sm-fill text-sm-center nav-link ">Visites</router-link>
+            <router-link :to="{ name: 'Reports' }" class="flex-sm-fill text-sm-center nav-link ">Signalements</router-link>
+        </nav>
+        <router-view :visits="visits" :reports="reports"></router-view>
     </div>
-    
-
 </template>
 
 
@@ -19,6 +14,8 @@ import Board from '../apis/Board.js';
 
 export default {
     name: 'VLPBoard',
+    components : {
+    },
     props: ['user'],
     data : () => ({
         visits : [],

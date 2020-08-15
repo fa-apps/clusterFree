@@ -1,7 +1,7 @@
 <template>
-  <div id="app" class="bg-light">
+  <div id="app" class="bg-light h-100">
     <Navigation />
-    <router-view />
+    <router-view/>
   </div>
 </template>
 
@@ -13,12 +13,4 @@ export default {
     Navigation
   }
 };
-
-
 </script>
-
-<style>
-.h-screen {
-  height: 100vh;
-}
-</style>

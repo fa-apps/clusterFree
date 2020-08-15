@@ -19,7 +19,8 @@ class BoardController extends Controller
         $currentUser=Auth()->user();
 
         $visits = Visit::join('users', 'users.id', '=', 'visits.rlp_id')
-        ->select('visits.id as id','users.name as rlp', 'visits.created_at as date')
+        ->select('visits.id as id','users.name as name', 'users.email as email', 'visits.created_at as date')
+        ->selectRaw('(select count(*) from reports where reports.reported_for_id = visits.vlp_id) as reports')  
         ->where('visits.vlp_id',$currentUser->id)
         ->orderBy('visits.created_at', 'desc')
         ->get();
@@ -40,18 +41,27 @@ class BoardController extends Controller
 
         
         $visits = Visit::join('users', 'users.id', '=', 'visits.vlp_id')        
-        ->select('visits.id as id','users.name as vlp', 'users.email as email', 'visits.created_at as date')
-        ->selectRaw('(select count(*) from reports where reports.reported_for_id = visits.vlp_id) as count')  
+        ->select('visits.id as id','users.name as name', 'users.email as email', 'visits.created_at as date')
+        ->selectRaw('(select count(*) from reports where reports.reported_for_id = visits.vlp_id) as reports')  
         ->where('visits.rlp_id',$currentUser->id)
         ->orderBy('visits.created_at', 'desc')
-        ->get();
+        ->get(); 
+        
+        $visitors = Visit::join('users', 'users.id', '=', 'visits.vlp_id')        
+        ->select('users.id as id','users.name as name', 'users.email as email', 'users.created_at as date')
+        ->selectRaw('(select count(*) from visits where visits.vlp_id = users.id) as visits')  
+        ->selectRaw('(select count(*) from reports where reports.reported_for_id = visits.vlp_id) as reports')  
+        ->where('visits.rlp_id',$currentUser->id)
+        ->orderBy('users.created_at', 'desc')
+        ->distinct()->get();
 
+        
         $reports= Report::select('reports.id as id','reports.created_at as date', 'reports.tested_at as test_date')
         ->where('reports.reported_for_id',$currentUser->id)
         ->orderBy('reports.created_at', 'desc')
         ->get();
 
-        return response()->json(["visits"=>$visits,"reports" => $reports]);
+        return response()->json(["visits"=>$visits,"reports" => $reports,"visitors"=>$visitors]);
 
     }
 

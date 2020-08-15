@@ -1,5 +1,5 @@
 <template>
-  <div class="mx-1 xtext-center py-1">
+  <div class="mx-1 py-1 h-100">
     
     <div class="card">
       <div class="card-header" v-if="user">
