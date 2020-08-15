@@ -1,8 +1,12 @@
 <template>
     <div class="mt-4">
-        <h4>Liste des visites</h4>
+        <h4>Liste de vos signalements</h4>
+        <div v-for="report in reports" :key="report.id">
+            Signalement le : <span class="text-secondary">{{ report.date | moment("dddd Do MMMM YYYY à H:mm") }}</span>
+            du test positif du <span class="text-secondary">{{ report.test_date | moment("dddd Do MMMM YYYY") }}</span>
+        </div> <h4>Liste de vos visites</h4>
         <div v-for="visit in visits" :key="visit.id">
-            {{visit.rlp}}:<span class="text-secondary"> le {{ visit.date | moment("dddd Do MMMM YYYY à H:mm") }}</span>
+            {{visit.rlp}} : <span class="text-secondary"> le {{ visit.date | moment("dddd Do MMMM YYYY à H:mm") }}</span>
         </div>
     </div>
     
@@ -17,12 +21,14 @@ export default {
     name: 'VLPBoard',
     props: ['user'],
     data : () => ({
-        visits : []
+        visits : [],
+        reports : []
     }),
     mounted() {
         Board.vlp()
         .then( ( response ) => {
-            this.visits=response.data;
+            this.visits=response.data.visits;
+            this.reports=response.data.reports;
         })
         .catch( error => {
             console.log(error)            

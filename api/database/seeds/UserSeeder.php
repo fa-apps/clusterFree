@@ -18,6 +18,7 @@ class UserSeeder extends Seeder
             'role' => 'RSL',
             'email' => 'free.ads.07.2020@gmail.com',
             'password' => Hash::make('password'),
+            'created_at' => '2020-01-01'
         ]);
     }
 }

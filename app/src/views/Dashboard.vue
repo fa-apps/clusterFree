@@ -1,9 +1,9 @@
 <template>
-  <div class="mx-1 text-center py-1">
+  <div class="mx-1 xtext-center py-1">
     
     <div class="card">
-      <div class="card-body" v-if="user">
-        <h3>Bonjour {{ user.name }}</h3>
+      <div class="card-header" v-if="user">
+        <h3>{{ user.name }}</h3>
         <span>{{ user.email }}</span>
       </div>
     </div>
@@ -36,7 +36,7 @@ export default {
   mounted() {
     User.auth().then(response => {
       this.user = response.data;
-    });
+    }).catch(error => console.log(error));
   }
 
 };

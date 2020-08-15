@@ -2,12 +2,13 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import VueMoment from 'vue-moment'
+import moment from 'moment'
 
-const moment = require('moment')
 require('moment/locale/fr')
- 
-Vue.use(require('vue-moment'), {
-    moment
+
+Vue.use(VueMoment, {
+    moment,
 })
 
 Vue.config.productionTip = false
