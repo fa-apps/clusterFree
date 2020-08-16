@@ -1,6 +1,6 @@
 <template>
-    <div class="mt-4 container h-100">
-        <div class="d-flex flex-row flex-wrap overflow-auto"> 
+    <div class="mt-4 container">
+        <div class="d-flex flex-row flex-wrap "> 
             <div v-for="visit in visits" :key="visit.id" class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-4 px-2">
                 <div class="card my-2">         
                     <div class="card-header d-flex flex-row flex-wrap justify-content-around">
@@ -18,7 +18,6 @@
         </div>
     </div>
 </template>
-
 
 <script>
 

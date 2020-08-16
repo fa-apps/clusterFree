@@ -1,9 +1,39 @@
-.board-section {
-    max-height:250px;
+.rsl-section {
+    height: calc(100% - 95px)  !important;
+}
+.vlp-section {
+    height: calc(100% - 95px)  !important;
 }
 
-.nav-pills .router-link-exact-active {
-    background-color: rgb(5, 97, 139);
+.content-section {
+
+    height: calc(100% - 60px)  !important;
+}
+
+
+@media (max-width: 576px) {
+
+    .content-section {
+
+        height: calc(100% - 160px)  !important;
+    }
+
+    .rsl-section {
+        height: calc(100% - 60px)  !important;
+    } 
+    .vlp-section {
+        height: calc(100% - 50px)  !important;
+    }
+    
+}
+
+.nav-pills .router-link-exact-active, .bg-dark-green, .btn-primary {
+    background-color: rgb(5, 97, 139) !important;
+}
+.icon-xl {
+    font-size: xx-large  !important;
+    color: rgba(5, 97, 139, .9);
+    cursor: pointer;
 }
 .nav-pills .nav-link {
     font-size: large !important;
@@ -20,4 +50,8 @@
 html, body {
     
     height: 100%;    
+}
+
+.scrollable {
+    overflow-y: auto;
 }

@@ -8,32 +8,32 @@
                     <div class="card-body">
                         
                         <div class="form-group row">
-                                <label for="email" class="col-md-4 col-form-label text-md-right">Adresse e-mail</label>
+                            <label for="email" class="col-md-4 col-form-label text-md-right">Adresse e-mail</label>
 
-                                <div class="col-md-6">
-                                    <input id="email" type="email" v-model="form.email" class="form-control" required autofocus>
+                            <div class="col-md-6">
+                                <input id="email" type="email" v-model="form.email" class="form-control" required autofocus>
 
-                                
-                                        <span class="invalid-feedback" role="alert">
-                                            
-                                        </span>
-                                
-                                </div>
+                            
+                                    <span class="invalid-feedback" role="alert">
+                                        
+                                    </span>
+                            
                             </div>
+                        </div>
 
-                            <div class="form-group row">
-                                <label for="password" class="col-md-4 col-form-label text-md-right">Mot de passe</label>
+                        <div class="form-group row">
+                            <label for="password" class="col-md-4 col-form-label text-md-right">Mot de passe</label>
 
-                                <div class="col-md-6">
-                                    <input id="password" type="password" v-model="form.password" class="form-control"  required >
+                            <div class="col-md-6">
+                                <input id="password" type="password" v-model="form.password" class="form-control"  required >
 
-                                    
-                                        <span class="invalid-feedback" role="alert">
-                                            
-                                        </span>
                                 
-                                </div>
+                                    <span class="invalid-feedback" role="alert">
+                                        
+                                    </span>
+                            
                             </div>
+                        </div>
 
                             <div class="form-group row mb-0">
                                 <div class="col-md-8 offset-md-4">

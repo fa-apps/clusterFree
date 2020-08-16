@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand navbar-dark bg-dark">
+  <nav class="navbar navbar-expand navbar-dark bg-dark-green">
     <div class="container">
       <div class="navbar-header mb-auto">
         <router-link class="navbar-brand" :to="{ path : isLoggedIn ? '/dashboard' : '/' }">Cluster Free</router-link>

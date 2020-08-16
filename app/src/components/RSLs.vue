@@ -1,6 +1,6 @@
 <template>
-    <div class="mt-4 container h-100 overflow-auto ">
-        <div class="d-flex flex-row flex-wrap "> 
+    <div class="mt-4 container">
+        <div class="d-flex flex-row flex-wrap"> 
             <div  v-for="rsl in rsls" :key="rsl.id" class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-4 px-2">
                 <div class="card my-2 ">         
                     <div class="card-header d-flex flex-row flex-wrap justify-content-around">

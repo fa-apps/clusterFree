@@ -1,5 +1,5 @@
 <template>
-    <div class="container px-0 py-4 h-100">
+    <div class="container px-0 py-4  rsl-section">
         <nav class="nav nav-pills flex-column flex-sm-row nav-justified">           
             <router-link  :to="{ path: '/dashboard' }" class="flex-sm-fill text-center nav-link ">Visites</router-link>
             <router-link :to="{ name: 'Visitors' }"  class="flex-sm-fill text-center nav-link ">Visiteurs</router-link>

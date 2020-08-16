@@ -8,7 +8,7 @@
                 <div class="py-4">
 
                         <div class="form-group row">
-                            <label for="date" class="col-md-4 col-form-label text-md-right">Date du test</label>
+                            <label for="date" class="col-12 col-form-label">Date du test</label>
                             
                                 <datepicker v-model="form.tested_at" :language="fr" inline name="date" wrapper-class="mx-auto"></datepicker>
                                

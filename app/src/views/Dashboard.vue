@@ -1,11 +1,41 @@
 <template>
-  <div class="mx-1 py-1 h-100">
-    
-    <div class="card">
-      <div class="card-header" v-if="user">
-        <h3>{{ user.name }}</h3>
-        <span>{{ user.email }}</span>
-      </div>
+  <div class="content-section scrollable">
+      <div class="card">
+        <div class="card-body container" v-if="user">
+            <div class="d-flex">
+            <div>
+              <h3>{{ user.name }}</h3>
+              <span>{{ user.email }}</span>
+            </div>
+            <div  v-if="user && user.role == 'RSL'" class="ml-auto" data-toggle="modal" data-target="#settings"><i class="fa fa-ellipsis-v icon-xl p-3"></i>
+              <div class="modal fade" id="settings" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="settingsLabel">Paramètres</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                       <div class="form-group row">
+                            <label for="delay-1" class="col-md-6 col-form-label text-md-right">Délai d'alerte (jours) </label>
+                            <div class="col-md-6">
+                                <input id="delay-1" v-model="form.delay1" class="form-control" required autofocus/>
+                                <span class="invalid-feedback" role="alert"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
     </div>
     <rsl-board :user="user" v-if="user && user.role == 'RSL'"/>
     <rlp-board :user="user" v-if="user && user.role == 'RLP'"/>
@@ -29,7 +59,10 @@ export default {
 
   data() {
     return {
-      user: null
+      user: null,
+      form : {
+        delay1 : 7
+      }
     };
   },
 
