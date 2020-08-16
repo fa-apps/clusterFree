@@ -25,6 +25,13 @@
                                 <span class="invalid-feedback" role="alert"></span>
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <label for="delay-1" class="col-md-6 col-form-label text-md-right">Délai de présence (heures) </label>
+                            <div class="col-md-6">
+                                <input id="delay-1" v-model="form.delay2" class="form-control" required autofocus/>
+                                <span class="invalid-feedback" role="alert"></span>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -61,7 +68,8 @@ export default {
     return {
       user: null,
       form : {
-        delay1 : 7
+        delay1 : 7,
+        delay2 : 3
       }
     };
   },

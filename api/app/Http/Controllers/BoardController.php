@@ -28,7 +28,7 @@ class BoardController extends Controller
         $reports= Report::select('reports.id as id','reports.created_at as date', 'reports.tested_at as test_date')
         ->where('reports.reported_for_id',$currentUser->id)
         ->orderBy('reports.created_at', 'desc')
-        ->get();;
+        ->get();
 
         return response()->json(["visits"=>$visits,"reports" => $reports]);
 
@@ -102,7 +102,21 @@ class BoardController extends Controller
         ->orderBy('users.created_at','desc')
         ->get();
 
-        return response()->json(["visits"=>$visits,"reports" => $reports,"locations"=>$locations,"visitors"=>$visitors,"rsls"=>$rsls]);
+        $reportId = 7;
+        $date='2020-08-13';
+
+        $visited = Visit::select('rlp_id')->where('vlp_id',$reportId)->distinct()->get();
+
+        $contaminables = User::select('users.id as id','users.name as name', 'users.email as email', 'users.created_at as date')
+        ->whereIn('users.id',function ($query) use ($visited, $date){
+            $query->select('vlp_id')
+                ->from('visits')
+                ->whereIn('visits.rlp_id',($visited)) 
+                ->whereDate('created_at', '=', date($date));
+        })->get();
+ 
+
+        return response()->json(["Contaminables"=>$contaminables,"visits"=>$visits,"reports" => $reports,"locations"=>$locations,"visitors"=>$visitors,"rsls"=>$rsls]);
 
     }
 }
