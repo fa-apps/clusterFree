@@ -9,6 +9,7 @@ import Dashboard from "../views/Dashboard.vue"
 import Visits from '../components/Visits.vue'
 import Visitors from '../components/Visitors.vue'
 import Reports from '../components/Reports.vue'
+import MailLogs from '../components/MailLogs.vue'
 import Locations from '../components/Locations.vue'
 import RSLs from '../components/RSLs.vue'
 
@@ -67,6 +68,11 @@ Vue.use(VueRouter)
         component: Reports
     },
     {
+        name:"MailLogs",
+        path: 'maillogs',
+        component: MailLogs
+    },
+    {
         name:"Locations",
         path: 'locations',
         component: Locations
@@ -81,7 +87,7 @@ Vue.use(VueRouter)
 
 const router = new VueRouter({
   mode: 'history',
-  base: process.env.BASE_URL,
+  base: '/', // process.env.BASE_URL,
   routes
 })
 

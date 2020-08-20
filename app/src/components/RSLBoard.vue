@@ -4,10 +4,11 @@
             <router-link  :to="{ path: '/dashboard' }" class="flex-sm-fill text-center nav-link ">Visites</router-link>
             <router-link :to="{ name: 'Visitors' }"  class="flex-sm-fill text-center nav-link ">Visiteurs</router-link>
             <router-link :to="{ name: 'Reports' }"  class="flex-sm-fill text-center nav-link ">Signalements</router-link>
+            <router-link :to="{ name: 'MailLogs' }"  class="flex-sm-fill text-center nav-link ">E-mails</router-link>
             <router-link :to="{ name: 'Locations' }"  class="flex-sm-fill text-center nav-link ">Lieux Publics</router-link>
             <router-link :to="{ name: 'RSLs' }"  class="flex-sm-fill text-center nav-link ">Responsables Sanitaires</router-link>
         </nav>
-        <router-view :visits="visits" :visitors="visitors" :reports="reports" :rsls="rsls" :locations="locations"></router-view>        
+        <router-view :visits="visits" :visitors="visitors" :reports="reports" :mail_logs="mail_logs" :rsls="rsls" :locations="locations"></router-view>        
     </div>
 </template>
 
@@ -21,6 +22,7 @@ export default {
     data : () => ({
         visits : [],
         reports : [],
+        mail_logs : [],
         locations : [],
         visitors : [],
         rsls : []
@@ -30,6 +32,7 @@ export default {
         .then( ( response ) => {
             this.visits=response.data.visits;
             this.reports=response.data.reports;
+            this.mail_logs=response.data.mail_logs;
             this.locations=response.data.locations;
             this.visitors=response.data.visitors;
             this.rsls=response.data.rsls;

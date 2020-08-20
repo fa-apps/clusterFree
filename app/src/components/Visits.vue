@@ -11,6 +11,7 @@
                         <div class="d-flex flex-row flex-wrap justify-content-between">
                             <div>Signalements <span class="text-secondary">{{visit.reports}}</span></div>
                         </div>
+                        <div v-if="visit.location">{{ visit.location }}</div>
                         <div>Date visite <span class="text-secondary">{{ visit.date | moment("dddd Do MMMM YYYY à H:mm") }}</span></div>
                     </div>
                 </div>

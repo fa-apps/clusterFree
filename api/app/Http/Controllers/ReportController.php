@@ -3,26 +3,32 @@
 namespace App\Http\Controllers;
 use App\Report;
 use App\Visit;
+use App\MailLog;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class ReportController extends Controller
 {
     public function report(Request $request) {
 
         $request->validate([
-            'tested_at' => 'required|date',
+            'tested_at' => 'required|date'
         ]);
 
         $currentUser=Auth()->user();
 
-        $user = $request->email ? User::where('email', $request->email)->first() : $currentUser ;
-
-        if (! $user ) {
-            throw ValidationException::withMessages([
-                'email' => ['Non trouvé.'],
-            ]);
+        if ($currentUser->role == "RSL") {
+            $user = User::where('email', $request->email)->first();
+            if (! $user ) {
+                throw ValidationException::withMessages([
+                    'email' => ['Non trouvé.'],
+                ]);
+            }
+        } else {
+            $user = $currentUser;
         }
+
 
         Report::create([
             'reported_by_id'=>$currentUser->id,
@@ -30,33 +36,63 @@ class ReportController extends Controller
             'tested_at'=>$request->tested_at 
         ]);
 
-        $visitors = Visit::select('users.id as id','users.name as name', 'users.email as email')
-            ->join('users', 'users.id', '=', 'visits.vlp_id')  
-            ->whereRaw("visits.vlp_id in (select vlp_id from visits v where v.rlp_id = "+$currentUser->id+")")
-            ->orderBy('users.created_at', 'desc')
-            ->distinct()
-            ->get();
-
-        //find clusturables
-
-        
+        //find contaminables
         
         $reportId = $user->id;
-        $date='2020-08-13';
+        $delay1 = 7;  //TODO fetch this from table settings
+        $interval = "P".$delay1."D";
+        $dateTested = new \DateTime($request->tested_at);
+        $dateTested->sub(new \DateInterval($interval));
+        $date = $dateTested->format('Y-m-d');
 
-        $visited = Visit::select('rlp_id')->where('vlp_id',$reportId)->distinct()->get();
+        
+        
+        $holderVisits = Visit::where([
+            ['vlp_id', '=', $reportId],
+            ['created_at' ,'>', date($date)]
+        ])->get();
+
+        $clusterables=[];
+
+        
+        foreach ( $holderVisits as $holderVisit) {
+            
+            $visitors = Visit::select('vlp_id')->where('rlp_id',$holderVisit->rlp_id)
+                ->where('vlp_id','<>', $holderVisit->vlp_id )
+                ->whereDate('created_at', $holderVisit->created_at)->get();
+
+            if (count($visitors)) {
+                foreach($visitors as $visitor) {
+                    $clusterables[]=$visitor->vlp_id;
+                }  
+            }
+        }
 
         $contaminables = User::select('users.id as id','users.name as name', 'users.email as email', 'users.created_at as date')
-        ->whereIn('users.id',function ($query) use ($visited, $date){
-            $query->select('vlp_id')
-                ->from('visits')
-                ->whereIn('visits.rlp_id',($visited)) 
-                ->whereDate('created_at', '=', date($date));
-        })->get();
+            ->whereIn('users.id',$clusterables)->get();
 
 
-        //TODO send emails
+        foreach($contaminables as $contaminable) {
 
+            MailLog::create([
+                'to'=>$contaminable->email,
+                'subject'=>"Message de Cluster Free",
+                'body'=>"
+Bonjour, 
+
+Nous avons détecté une potentielle contamination lors d'une de vos dernieres visites dans un établissement public.
+Nous vous conseillons vivement d'effectuer un test de dépistage.
+
+Merci :)
+
+L'équipe Cluster Free.
+" 
+            ]);
+        
+        }
+        
+
+        
         return response()->json($contaminables);
     }
 

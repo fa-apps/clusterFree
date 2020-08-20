@@ -8,6 +8,7 @@ use Illuminate\Validation\ValidationException;
 use App\User;
 use App\Visit;
 use App\Report;
+use App\MailLog;
 
 // TODO check role
 
@@ -49,7 +50,7 @@ class BoardController extends Controller
         
         $visitors = Visit::join('users', 'users.id', '=', 'visits.vlp_id')        
         ->select('users.id as id','users.name as name', 'users.email as email', 'users.created_at as date')
-        ->selectRaw('(select count(*) from visits where visits.vlp_id = users.id) as visits')  
+        ->selectRaw('(select count(*) from visits where visits.vlp_id = users.id and visits.rlp_id = '.$currentUser->id.') as visits')  
         ->selectRaw('(select count(*) from reports where reports.reported_for_id = visits.vlp_id) as reports')  
         ->where('visits.rlp_id',$currentUser->id)
         ->orderBy('users.created_at', 'desc')
@@ -70,16 +71,18 @@ class BoardController extends Controller
             
         $currentUser=Auth()->user();
         
-        $visits = Visit::join('users', 'users.id', '=', 'visits.vlp_id')        
-        ->select('visits.id as id','users.name as name', 'users.email as email', 'visits.created_at as date' )
+        $visits = Visit::join('users', 'users.id', '=', 'visits.vlp_id')->join('users as u', 'u.id', '=', 'visits.rlp_id')           
+        ->select('visits.id as id','users.name as name', 'users.email as email', 'visits.created_at as date' ,'u.name as location')
         ->selectRaw('(select count(*) from reports where reports.reported_for_id = visits.vlp_id) as reports')  
         ->orderBy('visits.created_at', 'desc')
         ->get();
 
-        $reports = Report::join('users', 'users.id', '=', 'reports.reported_for_id')
+        $reports = Report::leftJoin('users', 'users.id', '=', 'reports.reported_for_id')
         ->select('users.name as name','users.email as email','reports.id as id','reports.created_at as date', 'reports.tested_at as test_date')
         ->orderBy('reports.created_at', 'desc')
         ->get();
+
+        $mail_logs = MailLog::orderByDesc('created_at')->get();
 
         $locations = User::select('users.id as id','users.name as name', 'users.email as email', 'users.created_at as date')
         ->selectRaw('(select count(*) from visits where visits.rlp_id = users.id) as visits')  
@@ -102,21 +105,10 @@ class BoardController extends Controller
         ->orderBy('users.created_at','desc')
         ->get();
 
-        $reportId = 7;
-        $date='2020-08-13';
-
-        $visited = Visit::select('rlp_id')->where('vlp_id',$reportId)->distinct()->get();
-
-        $contaminables = User::select('users.id as id','users.name as name', 'users.email as email', 'users.created_at as date')
-        ->whereIn('users.id',function ($query) use ($visited, $date){
-            $query->select('vlp_id')
-                ->from('visits')
-                ->whereIn('visits.rlp_id',($visited)) 
-                ->whereDate('created_at', '=', date($date));
-        })->get();
+        
  
 
-        return response()->json(["Contaminables"=>$contaminables,"visits"=>$visits,"reports" => $reports,"locations"=>$locations,"visitors"=>$visitors,"rsls"=>$rsls]);
+        return response()->json(["visits"=>$visits,"reports" => $reports,"mail_logs" => $mail_logs,"locations"=>$locations,"visitors"=>$visitors,"rsls"=>$rsls]);
 
     }
 }
