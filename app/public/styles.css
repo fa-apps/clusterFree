@@ -10,6 +10,22 @@
     height: calc(100% - 60px)  !important;
 }
 
+.home {
+
+    background-image: url(/home.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    padding: 150px !important;
+    height:100%;
+    color: white;
+    font-weight: bolder !important;
+    text-shadow: 0 0 3px rgb(1, 42, 61) !important;
+}
+
+.home h1 {
+    font-size: 72px !important;
+}
 
 @media (max-width: 576px) {
 
@@ -24,6 +40,19 @@
     .vlp-section {
         height: calc(100% - 50px)  !important;
     }
+
+
+    .home {
+
+        background-position: top;
+        padding: 100px 10px !important;
+        color: white;
+    }
+
+    .home h1 {
+        font-size: 52px !important;
+    }
+
     
 }
 

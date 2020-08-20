@@ -1,7 +1,11 @@
 <template>
-  <div class="home text-center py-5 mt-5">
-    <h1>Default Home Page when not logged in</h1>
+<div class="home">
+  <div class="container">
+    <h1>Cluster Free</h1> 
+    <h2 class="my-3">Une web App pour aider à la détection de clusters...</h2>
+    <h4 class="my-5">Utilisez le lien 'Connexion' pour accéder aux services.</h4>
   </div>
+</div>
 </template>
 
 <script>

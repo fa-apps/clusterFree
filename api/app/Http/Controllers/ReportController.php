@@ -46,31 +46,41 @@ class ReportController extends Controller
         $date = $dateTested->format('Y-m-d');
 
         
-        
-        $holderVisits = Visit::where([
-            ['vlp_id', '=', $reportId],
-            ['created_at' ,'>', date($date)]
-        ])->get();
+        if ($user->role == "RLP") {
 
-        $clusterables=[];
+            $contaminables = Visit::select('users.email')
+                ->leftJoin('users', 'users.id', '=', 'visits.vlp_id')
+                ->where('rlp_id',$user->id)
+                ->whereDate('visits.created_at', '>', date($date))
+                ->distinct()
+                ->get();
 
-        
-        foreach ( $holderVisits as $holderVisit) {
+        } else {
             
-            $visitors = Visit::select('vlp_id')->where('rlp_id',$holderVisit->rlp_id)
-                ->where('vlp_id','<>', $holderVisit->vlp_id )
-                ->whereDate('created_at', $holderVisit->created_at)->get();
+            $holderVisits = Visit::where([
+                ['vlp_id', '=', $reportId],
+                ['created_at' ,'>', date($date)]
+            ])->get();
 
-            if (count($visitors)) {
-                foreach($visitors as $visitor) {
-                    $clusterables[]=$visitor->vlp_id;
-                }  
+            $clusterables=[];
+
+            foreach ( $holderVisits as $holderVisit) {
+                
+                $visitors = Visit::select('vlp_id')->where('rlp_id',$holderVisit->rlp_id)
+                    ->where('vlp_id','<>', $holderVisit->vlp_id )
+                    ->whereDate('created_at', $holderVisit->created_at)->get();
+
+                if (count($visitors)) {
+                    foreach($visitors as $visitor) {
+                        $clusterables[]=$visitor->vlp_id;
+                    }  
+                }
             }
+
+            $contaminables = User::select('users.id as id','users.name as name', 'users.email as email', 'users.created_at as date')
+                ->whereIn('users.id',$clusterables)->get();
+
         }
-
-        $contaminables = User::select('users.id as id','users.name as name', 'users.email as email', 'users.created_at as date')
-            ->whereIn('users.id',$clusterables)->get();
-
 
         foreach($contaminables as $contaminable) {
 
